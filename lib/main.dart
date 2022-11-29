@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:wordle_clone/di/init_get_it.dart';
+import 'package:wordle_clone/pages/game/game_page.dart';
 
 void main() async {
   await configureDependencies();
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Text('Flutter Demo Home Page'),
+      home: const GamePage(),
     );
   }
 }
