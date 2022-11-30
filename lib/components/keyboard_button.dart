@@ -30,7 +30,7 @@ class KeyboardButton extends StatelessWidget {
         onTap: onClick,
         child: Center(
           child: name == "<"
-              ? const Icon(Icons.backspace_rounded)
+              ? Image.asset("assets/icons/backspace.png")
               : Text(
                   name.toUpperCase(),
                   style: const TextStyle(

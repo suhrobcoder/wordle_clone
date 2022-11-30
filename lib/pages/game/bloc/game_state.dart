@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'game_bloc.dart';
 
 @immutable
@@ -43,7 +42,6 @@ class GameState {
     MatchingUsedKey? usedKeys,
     bool? wrongGuessShake,
   }) {
-    print("Solution $solution");
     return GameState(
       currentGuessIndex: currentGuessIndex ?? this.currentGuessIndex,
       gameEnded: gameEnded ?? this.gameEnded,

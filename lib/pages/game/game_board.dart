@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:wordle_clone/components/keyboard_button.dart';
 import 'package:wordle_clone/components/letter_square.dart';
 import 'package:wordle_clone/models/guess.dart';
 import 'package:wordle_clone/pages/game/keyboard.dart';
 import 'package:wordle_clone/utils/constants.dart';
 import 'package:wordle_clone/utils/list_ext.dart';
 
-class GameBoard extends StatelessWidget {
+class GameBoard extends StatefulWidget {
   const GameBoard({
     super.key,
     required this.solution,
     required this.guesses,
     required this.usedKeys,
+    required this.wrongGuessShake,
+    required this.currentGuessIndex,
     required this.handleGuess,
     required this.resetGame,
   });
@@ -18,17 +21,52 @@ class GameBoard extends StatelessWidget {
   final String solution;
   final List<Guess> guesses;
   final MatchingUsedKey usedKeys;
+  final bool wrongGuessShake;
+  final int currentGuessIndex;
   final void Function(String) handleGuess;
   final void Function() resetGame;
 
   @override
+  State<GameBoard> createState() => _GameBoardState();
+}
+
+class _GameBoardState extends State<GameBoard>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 100),
+    );
+    _controller.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.bg,
-      child: Column(
-        children: [
-          ...guesses
-              .map((guess) => Row(
+    return Column(
+      children: [
+        ...widget.guesses
+            .map((guess) => AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) => Transform.translate(
+                    offset: Offset(
+                        widget.wrongGuessShake &&
+                                widget.currentGuessIndex == guess.id
+                            ? (_controller.value - 0.5) * 20
+                            : 0,
+                        0),
+                    child: child,
+                  ),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: guess.letters
                         .mapIndexed((letter, index) => LetterSquare(
@@ -37,16 +75,23 @@ class GameBoard extends StatelessWidget {
                               id: index,
                             ))
                         .toList(),
-                  ))
-              .toList(),
-          Keyboard(
-            usedKeys: usedKeys,
-            keyPressed: handleGuess,
-          ),
-          ElevatedButton(
-              onPressed: () => handleGuess("Enter"), child: Text("Enter")),
-        ],
-      ),
+                  ),
+                ))
+            .toList(),
+        Keyboard(
+          usedKeys: widget.usedKeys,
+          keyPressed: widget.handleGuess,
+        ),
+        KeyboardButton(
+          name: "Submit",
+          color: AppColors.keyDefault,
+          width: 120,
+          height: 48,
+          onClick: widget.wrongGuessShake
+              ? () {}
+              : () => widget.handleGuess("Enter"),
+        ),
+      ],
     );
   }
 }

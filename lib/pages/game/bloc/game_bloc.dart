@@ -70,7 +70,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
         emit(state.copyWith(guesses: updatedGuesses));
       }
     });
-    on<_CheckGuess>((event, emit) {
+    on<_CheckGuess>((event, emit) async {
       final currentGuessedWord = event.currentGuess.letters.join("");
       if (currentGuessedWord.length == 5) {
         // TODO
@@ -127,7 +127,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
               currentGuessIndex: state.currentGuessIndex + 1));
           add(_HandleFoundKeysOnKeyboard(updatedGuess));
         } else {
-          // TODO wrong guess shake
+          emit(state.copyWith(wrongGuessShake: true));
+          await Future.delayed(const Duration(milliseconds: 500));
+          emit(state.copyWith(wrongGuessShake: false));
         }
       }
     });
