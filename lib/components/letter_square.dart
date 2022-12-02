@@ -7,20 +7,30 @@ class LetterSquare extends StatelessWidget {
     super.key,
     required this.guess,
     required this.letter,
+    this.revealedLetter,
     required this.id,
   });
 
   final Guess guess;
   final String letter;
+  final String? revealedLetter;
   final int id;
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size.width / 6.5;
+    final size = MediaQuery.of(context).size.width / 7;
+    var text = "";
+    if (revealedLetter == null && letter.isNotEmpty) {
+      text = letter;
+    } else if (revealedLetter != null && letter.isEmpty) {
+      text = revealedLetter!;
+    } else {
+      text = letter;
+    }
     return Container(
       width: size,
       height: size,
-      margin: const EdgeInsets.all(2),
+      margin: const EdgeInsets.all(3),
       decoration: BoxDecoration(
         color: AppColors.getColorByMatch(guess.matches[id]),
         borderRadius: BorderRadius.circular(8),
@@ -28,7 +38,7 @@ class LetterSquare extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          letter.toUpperCase(),
+          text.toUpperCase(),
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 30,

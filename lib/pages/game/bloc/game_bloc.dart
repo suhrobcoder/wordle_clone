@@ -2,6 +2,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
+import 'package:vibration/vibration.dart';
+import 'package:wordle_clone/data/shared_prefs.dart';
 
 import 'package:wordle_clone/data/words_service.dart';
 import 'package:wordle_clone/models/guess.dart';
@@ -14,13 +16,18 @@ part 'game_state.dart';
 @Injectable()
 class GameBloc extends Bloc<GameEvent, GameState> {
   final WordsService wordsService;
+  final SharedPrefs sharedPrefs;
 
   late final List<String> wordList;
   late final List<String> answers;
 
-  GameBloc(this.wordsService) : super(GameState.initialState()) {
+  GameBloc(this.wordsService, this.sharedPrefs)
+      : super(GameState.initialState()) {
     wordList = wordsService.getWordList();
     answers = wordsService.getAnswers();
+    sharedPrefs.listenCoins().listen((event) {
+      add(CoinChanged(sharedPrefs.coins));
+    });
     on<_HandleFoundKeysOnKeyboard>((event, emit) {
       final tempUsedKeys = {...state.usedKeys};
       event.guess.letters.forEachIndexed((letter, index) {
@@ -60,7 +67,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
             .toList();
         emit(state.copyWith(guesses: updatedGuesses));
       } else if (event.keyPressed == "<") {
-        currentGuessLetters[lastNonEmptyIndex] = "";
+        if (lastNonEmptyIndex >= 0) {
+          currentGuessLetters[lastNonEmptyIndex] = "";
+        }
         final updatedGuess =
             event.currentGuess.copyWith(letters: currentGuessLetters);
         final updatedGuesses = state.guesses
@@ -88,7 +97,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
               .mapIndexed((guess, index) =>
                   index == state.currentGuessIndex ? updatedGuess : guess)
               .toList();
-          emit(state.copyWith(guesses: updatedGuesses));
+          emit(state.copyWith(guesses: updatedGuesses, gameWon: true));
         } else if (wordList.contains(currentGuessedWord)) {
           final matches = <MatchStatus>[];
           event.currentGuess.letters.forEachIndexed((letter, index) {
@@ -128,6 +137,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
           add(_HandleFoundKeysOnKeyboard(updatedGuess));
         } else {
           emit(state.copyWith(wrongGuessShake: true));
+          Vibration.vibrate(duration: 100);
           await Future.delayed(const Duration(milliseconds: 500));
           emit(state.copyWith(wrongGuessShake: false));
         }
@@ -144,14 +154,41 @@ class GameBloc extends Bloc<GameEvent, GameState> {
         }
       }
     });
-    on<_ResetGameState>((event, emit) {
-      emit(state.copyWith(guesses: initialGuesses));
-    });
     on<ResetGame>((event, emit) {
+      if (state.gameWon) {
+        sharedPrefs.setCoins(state.coins + coinsForGameWon);
+      }
       emit(GameState.initialState().copyWith(solution: answers.random()));
-      add(_ResetGameState());
+    });
+    on<RevealRightGuess>((event, emit) {
+      if (state.coins < revealLetterCoin) {
+        return;
+      }
+      var unRevealedKey = state.solution.split('').firstWhere(
+          (element) => !state.usedKeys.keys.contains(element),
+          orElse: () => '');
+      if (unRevealedKey.isEmpty) {
+        unRevealedKey = state.solution.split('').firstWhere(
+            (element) => state.usedKeys[element] != MatchStatus.correct,
+            orElse: () => '');
+      }
+      if (unRevealedKey.isNotEmpty) {
+        final newUsedKeys = {
+          ...state.usedKeys,
+          unRevealedKey: MatchStatus.correct
+        };
+        final newRevealedLetters = state.revealedLetters;
+        newRevealedLetters.add(unRevealedKey);
+        emit(state.copyWith(
+            usedKeys: newUsedKeys, revealedLetters: newRevealedLetters));
+        sharedPrefs.setCoins(state.coins - revealLetterCoin);
+      }
+    });
+    on<CoinChanged>((event, emit) {
+      emit(state.copyWith(coins: event.coins));
     });
     add(ResetGame());
+    add(CoinChanged(sharedPrefs.coins));
   }
 }
 
@@ -178,4 +215,8 @@ class _CheckGuess extends GameEvent {
   _CheckGuess(this.currentGuess);
 }
 
-class _ResetGameState extends GameEvent {}
+class CoinChanged extends GameEvent {
+  final int coins;
+
+  CoinChanged(this.coins);
+}

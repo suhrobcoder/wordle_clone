@@ -5,6 +5,12 @@ const letterCount = 5;
 const rowCount = 6;
 const marginBetweenCells = 8.0;
 
+const initialCoins = 200;
+const coinsForAd = 50;
+const revealLetterCoin = 120;
+const removeLetterCoin = 100;
+const coinsForGameWon = 100;
+
 class AppColors {
   static const correct = Color(0xFF6aaa64);
   static const present = Color(0xFFc9b458);

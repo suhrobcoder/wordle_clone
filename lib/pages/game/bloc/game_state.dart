@@ -7,10 +7,12 @@ class GameState {
     required this.guesses,
     required this.currentGuessIndex,
     required this.usedKeys,
+    required this.revealedLetters,
     required this.gameStarted,
     required this.gameEnded,
     required this.gameWon,
     required this.wrongGuessShake,
+    required this.coins,
   });
 
   final int currentGuessIndex;
@@ -20,17 +22,21 @@ class GameState {
   final List<Guess> guesses;
   final String solution;
   final MatchingUsedKey usedKeys;
+  final List<String> revealedLetters;
   final bool wrongGuessShake;
+  final int coins;
 
   GameState.initialState()
       : solution = '',
         guesses = initialGuesses,
         currentGuessIndex = 0,
         usedKeys = {},
+        revealedLetters = [],
         gameStarted = false,
         gameEnded = false,
         gameWon = false,
-        wrongGuessShake = false;
+        wrongGuessShake = false,
+        coins = 0;
 
   GameState copyWith({
     int? currentGuessIndex,
@@ -38,9 +44,11 @@ class GameState {
     bool? gameStarted,
     bool? gameWon,
     List<Guess>? guesses,
+    List<String>? revealedLetters,
     String? solution,
     MatchingUsedKey? usedKeys,
     bool? wrongGuessShake,
+    int? coins,
   }) {
     return GameState(
       currentGuessIndex: currentGuessIndex ?? this.currentGuessIndex,
@@ -50,7 +58,9 @@ class GameState {
       guesses: guesses ?? this.guesses,
       solution: solution ?? this.solution,
       usedKeys: usedKeys ?? this.usedKeys,
+      revealedLetters: revealedLetters ?? this.revealedLetters,
       wrongGuessShake: wrongGuessShake ?? this.wrongGuessShake,
+      coins: coins ?? this.coins,
     );
   }
 }

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wordle_clone/components/keyboard_button.dart';
 import 'package:wordle_clone/components/letter_square.dart';
 import 'package:wordle_clone/models/guess.dart';
 import 'package:wordle_clone/pages/game/keyboard.dart';
-import 'package:wordle_clone/utils/constants.dart';
 import 'package:wordle_clone/utils/list_ext.dart';
 
 class GameBoard extends StatefulWidget {
@@ -78,18 +76,10 @@ class _GameBoardState extends State<GameBoard>
                   ),
                 ))
             .toList(),
+        const SizedBox(height: 20),
         Keyboard(
           usedKeys: widget.usedKeys,
           keyPressed: widget.handleGuess,
-        ),
-        KeyboardButton(
-          name: "Submit",
-          color: AppColors.keyDefault,
-          width: 120,
-          height: 48,
-          onClick: widget.wrongGuessShake
-              ? () {}
-              : () => widget.handleGuess("Enter"),
         ),
       ],
     );

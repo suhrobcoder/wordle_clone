@@ -4,6 +4,7 @@ import 'package:wordle_clone/di/init_get_it.dart';
 import 'package:wordle_clone/pages/game/game_page.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies();
   runApp(const MyApp());
 }
