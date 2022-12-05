@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:wordle_clone/localizations.dart';
 import 'package:wordle_clone/models/guess.dart';
 import 'package:wordle_clone/utils/constants.dart';
 
@@ -38,7 +40,9 @@ class LetterSquare extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          text.toUpperCase(),
+          context.locale == uzLatin
+              ? text
+              : translit.unTranslit(source: text).toUpperCase(),
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 30,

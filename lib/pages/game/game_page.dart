@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wordle_clone/components/button.dart';
@@ -79,7 +80,7 @@ class GamePage extends StatelessWidget {
                           ),
                         ),
                         KeyboardButton(
-                          name: "Submit",
+                          name: "submit".tr(),
                           color: AppColors.keyDefault,
                           width: 120,
                           height: 48,

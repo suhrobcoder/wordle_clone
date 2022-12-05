@@ -1,14 +1,16 @@
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:wordle_clone/components/keyboard_button.dart';
+import 'package:wordle_clone/localizations.dart';
 import 'package:wordle_clone/models/guess.dart';
 import 'package:wordle_clone/utils/constants.dart';
 
 const keys = [
-  ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
-  ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
-  ["z", "x", "c", "v", "b", "n", "m", "<"],
+  ["q", "e", "r", "t", "y", "u", "i", "o", "p", "o‘", "g‘"],
+  ["a", "s", "d", "f", "g", "h", "j", "k", "l", "sh"],
+  ["z", "x", "v", "b", "n", "m", "ch", "ng", "<"],
 ];
 
 class Keyboard extends StatelessWidget {
@@ -33,7 +35,9 @@ class Keyboard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: row
               .map((key) => KeyboardButton(
-                    name: key,
+                    name: context.locale == uzLatin
+                        ? key
+                        : translit.unTranslit(source: key),
                     color: AppColors.getColorByMatch(usedKeys[key]),
                     width: width,
                     height: height,

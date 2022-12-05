@@ -18,7 +18,10 @@ class KeyboardButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: name == "<" ? width * 1.5 : width,
+      width: name == "<" ||
+              (RegExp(r'^[a-zA-Z]+$').hasMatch(name) && name.length > 1)
+          ? width * 1.5
+          : width,
       height: height,
       margin: const EdgeInsets.all(2),
       decoration: BoxDecoration(
@@ -38,6 +41,7 @@ class KeyboardButton extends StatelessWidget {
                     fontWeight: FontWeight.w800,
                     color: Colors.white,
                   ),
+                  maxLines: 1,
                 ),
         ),
       ),
