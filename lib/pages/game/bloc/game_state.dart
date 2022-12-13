@@ -42,7 +42,7 @@ class GameState {
     int? currentGuessIndex,
     bool? gameEnded,
     bool? gameStarted,
-    bool? gameWon,
+    bool gameWon = false,
     List<Guess>? guesses,
     List<String>? revealedLetters,
     String? solution,
@@ -54,7 +54,7 @@ class GameState {
       currentGuessIndex: currentGuessIndex ?? this.currentGuessIndex,
       gameEnded: gameEnded ?? this.gameEnded,
       gameStarted: gameStarted ?? this.gameStarted,
-      gameWon: gameWon ?? this.gameWon,
+      gameWon: gameWon,
       guesses: guesses ?? this.guesses,
       solution: solution ?? this.solution,
       usedKeys: usedKeys ?? this.usedKeys,
@@ -62,5 +62,10 @@ class GameState {
       wrongGuessShake: wrongGuessShake ?? this.wrongGuessShake,
       coins: coins ?? this.coins,
     );
+  }
+
+  @override
+  String toString() {
+    return 'GameState{currentGuessIndex: $currentGuessIndex, gameEnded: $gameEnded, gameStarted: $gameStarted, gameWon: $gameWon, guesses: $guesses, solution: $solution, usedKeys: $usedKeys, revealedLetters: $revealedLetters, wrongGuessShake: $wrongGuessShake, coins: $coins}';
   }
 }

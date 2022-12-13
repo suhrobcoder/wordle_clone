@@ -6,6 +6,7 @@ import 'package:wordle_clone/components/keyboard_button.dart';
 import 'package:wordle_clone/localizations.dart';
 import 'package:wordle_clone/models/guess.dart';
 import 'package:wordle_clone/utils/constants.dart';
+import 'package:wordle_clone/utils/translit.dart';
 
 const keys = [
   ["q", "e", "r", "t", "y", "u", "i", "o", "p", "o‘", "g‘"],
@@ -37,7 +38,7 @@ class Keyboard extends StatelessWidget {
               .map((key) => KeyboardButton(
                     name: context.locale == uzLatin
                         ? key
-                        : translit.unTranslit(source: key),
+                        : Translit.latinToCyrillic(source: key),
                     color: AppColors.getColorByMatch(usedKeys[key]),
                     width: width,
                     height: height,

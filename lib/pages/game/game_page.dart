@@ -5,9 +5,11 @@ import 'package:wordle_clone/components/button.dart';
 import 'package:wordle_clone/components/coin_widget.dart';
 import 'package:wordle_clone/components/keyboard_button.dart';
 import 'package:wordle_clone/di/init_get_it.dart';
+import 'package:wordle_clone/localizations.dart';
 import 'package:wordle_clone/pages/game/bloc/game_bloc.dart';
 import 'package:wordle_clone/pages/game/game_board.dart';
 import 'package:wordle_clone/utils/constants.dart';
+import 'package:wordle_clone/utils/translit.dart';
 
 class GamePage extends StatelessWidget {
   const GamePage({super.key});
@@ -19,6 +21,7 @@ class GamePage extends StatelessWidget {
       child: BlocConsumer<GameBloc, GameState>(
         listener: ((context, state) {
           if (state.gameWon) {
+            print(state.toString());
             showDialog(
               context: context,
               builder: (context1) => GameWonDialog(
@@ -123,7 +126,10 @@ class GameWonDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            solution.toUpperCase(),
+            (context.locale == uzLatin
+                    ? solution
+                    : Translit.latinToCyrillic(source: solution))
+                .toUpperCase(),
             style: const TextStyle(
               fontSize: 36,
               fontWeight: FontWeight.bold,

@@ -80,68 +80,35 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       }
     });
     on<_CheckGuess>((event, emit) async {
-      final currentGuessedWord = event.currentGuess.letters.join("");
-      if (currentGuessedWord.length == 5) {
-        // TODO
-        if (currentGuessedWord == state.solution) {
-          final matches = [
-            MatchStatus.correct,
-            MatchStatus.correct,
-            MatchStatus.correct,
-            MatchStatus.correct,
-            MatchStatus.correct,
-          ];
-          final updatedGuess = event.currentGuess
-              .copyWith(matches: matches, isComplete: true, isCorrect: true);
-          final updatedGuesses = state.guesses
-              .mapIndexed((guess, index) =>
-                  index == state.currentGuessIndex ? updatedGuess : guess)
-              .toList();
-          emit(state.copyWith(guesses: updatedGuesses, gameWon: true));
-        } else if (wordList.contains(currentGuessedWord)) {
-          final matches = <MatchStatus>[];
-          event.currentGuess.letters.forEachIndexed((letter, index) {
-            final leftSlice = currentGuessedWord.substring(0, index + 1);
-            final countInLeft = leftSlice
-                .split('')
-                .where((element) => element == letter)
-                .length;
-            final totalCount = state.solution
-                .split('')
-                .where((element) => element == letter)
-                .length;
-            final nonMatchingPairs = state.solution.split('').whereIndexed(
-                (element, index) => currentGuessedWord[index] != element);
-            if (letter == state.solution[index]) {
-              matches.add(MatchStatus.correct);
-            } else if (state.solution.contains(letter)) {
-              if (countInLeft <= totalCount &&
-                  nonMatchingPairs.contains(letter)) {
-                matches.add(MatchStatus.present);
-              } else {
-                matches.add(MatchStatus.absent);
-              }
-            } else {
-              matches.add(MatchStatus.absent);
-            }
-          });
-          final updatedGuess = event.currentGuess
-              .copyWith(matches: matches, isComplete: true, isCorrect: false);
-          final updatedGuesses = state.guesses
-              .mapIndexed((guess, index) =>
-                  index == state.currentGuessIndex ? updatedGuess : guess)
-              .toList();
-          emit(state.copyWith(
-              guesses: updatedGuesses,
-              currentGuessIndex: state.currentGuessIndex + 1));
-          add(_HandleFoundKeysOnKeyboard(updatedGuess));
-        } else {
-          emit(state.copyWith(wrongGuessShake: true));
-          Vibration.vibrate(duration: 100);
-          await Future.delayed(const Duration(milliseconds: 500));
-          emit(state.copyWith(wrongGuessShake: false));
-        }
+      final guessedWord = event.currentGuess.letters.join("");
+      final currentGuessedWord = _replaceSpecialCharacters(guessedWord);
+      final currentSolution = _replaceSpecialCharacters(state.solution);
+      if (currentGuessedWord.length < 5) {
+        return;
       }
+      if (!wordList.contains(guessedWord)) {
+        emit(state.copyWith(wrongGuessShake: true));
+        Vibration.vibrate(duration: 100);
+        await Future.delayed(const Duration(milliseconds: 500));
+        emit(state.copyWith(wrongGuessShake: false));
+        return;
+      }
+      final matches = _matchAnswer(currentGuessedWord, currentSolution);
+      final updatedGuess = event.currentGuess.copyWith(
+        matches: matches,
+        isComplete: true,
+        isCorrect: matches.every((match) => match == MatchStatus.correct),
+      );
+      final updatedGuesses = state.guesses
+          .mapIndexed((guess, index) =>
+              index == state.currentGuessIndex ? updatedGuess : guess)
+          .toList();
+      emit(state.copyWith(
+        guesses: updatedGuesses,
+        gameWon: matches.every((match) => match == MatchStatus.correct),
+        currentGuessIndex: state.currentGuessIndex + 1,
+      ));
+      add(_HandleFoundKeysOnKeyboard(updatedGuess));
     });
     on<HandleGuess>((event, emit) {
       if (!state.gameEnded) {
@@ -158,7 +125,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       if (state.gameWon) {
         sharedPrefs.setCoins(state.coins + coinsForGameWon);
       }
-      emit(GameState.initialState().copyWith(solution: answers.random()));
+      emit(GameState.initialState().copyWith(solution: "yaxshi"));
     });
     on<RevealRightGuess>((event, emit) {
       if (state.coins < revealLetterCoin) {
@@ -189,6 +156,34 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     });
     add(ResetGame());
     add(CoinChanged(sharedPrefs.coins));
+  }
+
+  List<MatchStatus> _matchAnswer(String answer, String solution) {
+    final answerList = answer.split('');
+    final solutionList = solution.split('');
+    final result = List.generate(5, (_) => MatchStatus.absent);
+    answerList.forEachIndexed((letter, index) {
+      if (letter == solutionList[index]) {
+        answerList[index] = ' ';
+        result[index] = MatchStatus.correct;
+      }
+    });
+    answerList.forEachIndexed((letter, index) {
+      if (solutionList.contains(letter)) {
+        result[index] = MatchStatus.present;
+      }
+    });
+    return result;
+  }
+
+  String _replaceSpecialCharacters(String input) {
+    var result = input;
+    result = result.replaceAll('sh', '1');
+    result = result.replaceAll('ch', '2');
+    result = result.replaceAll('ng', '3');
+    result = result.replaceAll('o‘', '4');
+    result = result.replaceAll('g‘', '5');
+    return result;
   }
 }
 

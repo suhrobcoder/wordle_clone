@@ -37,9 +37,6 @@ dependencies:
   vibration: ^1.7.6
   shared_preferences: ^2.0.15
   easy_localization: ^3.0.1
-  translit_uz:
-    git:
-      url: https://github.com/suhrobcoder/translit_uz.git
 
 dev_dependencies:
   flutter_test:

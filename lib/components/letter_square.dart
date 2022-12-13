@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:wordle_clone/localizations.dart';
 import 'package:wordle_clone/models/guess.dart';
 import 'package:wordle_clone/utils/constants.dart';
+import 'package:wordle_clone/utils/translit.dart';
 
 class LetterSquare extends StatelessWidget {
   const LetterSquare({
@@ -41,8 +42,8 @@ class LetterSquare extends StatelessWidget {
       child: Center(
         child: Text(
           context.locale == uzLatin
-              ? text
-              : translit.unTranslit(source: text).toUpperCase(),
+              ? text.toUpperCase()
+              : Translit.latinToCyrillic(source: text).toUpperCase(),
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 30,
