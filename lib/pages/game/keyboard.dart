@@ -6,12 +6,17 @@ import 'package:wordle_clone/components/keyboard_button.dart';
 import 'package:wordle_clone/localizations.dart';
 import 'package:wordle_clone/models/guess.dart';
 import 'package:wordle_clone/utils/constants.dart';
-import 'package:wordle_clone/utils/translit.dart';
 
-const keys = [
+const latinKeys = [
   ["q", "e", "r", "t", "y", "u", "i", "o", "p", "o‘", "g‘"],
   ["a", "s", "d", "f", "g", "h", "j", "k", "l", "sh"],
   ["z", "x", "v", "b", "n", "m", "ch", "ng", "<"],
+];
+
+const cyrillicKeys = [
+  ["й", "ё", "е", "р", "т", "у", "ғ", "и", "о", "п", "қ", "ғ"],
+  ["а", "ю", "с", "д", "ф", "г", "ҳ", "ж", "к", "л", "ш"],
+  ["я", "з", "х", "в", "б", "н", "м", "ч", "нг", "<"],
 ];
 
 class Keyboard extends StatelessWidget {
@@ -26,6 +31,7 @@ class Keyboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final keys = context.locale == uzLatin ? latinKeys : cyrillicKeys;
     final maxKeyCount = keys.map((e) => e.length).reduce(max);
     final size = MediaQuery.of(context).size;
     return Column(
@@ -36,9 +42,7 @@ class Keyboard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: row
               .map((key) => KeyboardButton(
-                    name: context.locale == uzLatin
-                        ? key
-                        : Translit.latinToCyrillic(source: key),
+                    name: key,
                     color: AppColors.getColorByMatch(usedKeys[key]),
                     width: width,
                     height: height,

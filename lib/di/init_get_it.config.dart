@@ -33,9 +33,14 @@ extension GetItInjectableX on _i1.GetIt {
     );
     gh.singleton<_i4.SharedPrefs>(_i4.SharedPrefs(gh<_i3.SharedPreferences>()));
     gh.factory<_i5.WordsService>(() => _i5.WordsService());
-    gh.factory<_i6.GameBloc>(() => _i6.GameBloc(
+    gh.factoryParam<_i6.GameBloc, bool, dynamic>((
+      isLatin,
+      _,
+    ) =>
+        _i6.GameBloc(
           gh<_i5.WordsService>(),
           gh<_i4.SharedPrefs>(),
+          isLatin,
         ));
     return this;
   }

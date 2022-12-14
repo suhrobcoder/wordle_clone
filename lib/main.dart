@@ -24,7 +24,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.locale = uzCyrl;
     return MaterialApp(
       title: 'Wordle Clone',
       theme: ThemeData(

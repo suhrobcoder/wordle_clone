@@ -41,9 +41,7 @@ class LetterSquare extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          context.locale == uzLatin
-              ? text.toUpperCase()
-              : Translit.latinToCyrillic(source: text).toUpperCase(),
+          text.toUpperCase(),
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 30,

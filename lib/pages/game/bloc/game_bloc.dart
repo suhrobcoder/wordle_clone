@@ -17,14 +17,20 @@ part 'game_state.dart';
 class GameBloc extends Bloc<GameEvent, GameState> {
   final WordsService wordsService;
   final SharedPrefs sharedPrefs;
+  final bool isLatin;
 
   late final List<String> wordList;
   late final List<String> answers;
 
-  GameBloc(this.wordsService, this.sharedPrefs)
+  GameBloc(this.wordsService, this.sharedPrefs, @factoryParam this.isLatin)
       : super(GameState.initialState()) {
-    wordList = wordsService.getWordList();
-    answers = wordsService.getAnswers();
+    if (isLatin) {
+      wordList = wordsService.getLatinWordList();
+      answers = wordsService.getLatinAnswers();
+    } else {
+      wordList = wordsService.getCyrillicWordList();
+      answers = wordsService.getCyrillicAnswers();
+    }
     sharedPrefs.listenCoins().listen((event) {
       add(CoinChanged(sharedPrefs.coins));
     });
@@ -125,7 +131,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       if (state.gameWon) {
         sharedPrefs.setCoins(state.coins + coinsForGameWon);
       }
-      emit(GameState.initialState().copyWith(solution: "yaxshi"));
+      emit(GameState.initialState().copyWith(solution: answers.random()));
     });
     on<RevealRightGuess>((event, emit) {
       if (state.coins < revealLetterCoin) {
@@ -183,6 +189,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     result = result.replaceAll('ng', '3');
     result = result.replaceAll('o‘', '4');
     result = result.replaceAll('g‘', '5');
+    result = result.replaceAll('нг', '6');
     return result;
   }
 }

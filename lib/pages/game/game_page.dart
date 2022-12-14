@@ -17,11 +17,10 @@ class GamePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<GameBloc>(),
+      create: (_) => getIt<GameBloc>(param1: context.locale == uzLatin),
       child: BlocConsumer<GameBloc, GameState>(
         listener: ((context, state) {
           if (state.gameWon) {
-            print(state.toString());
             showDialog(
               context: context,
               builder: (context1) => GameWonDialog(
@@ -126,10 +125,7 @@ class GameWonDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            (context.locale == uzLatin
-                    ? solution
-                    : Translit.latinToCyrillic(source: solution))
-                .toUpperCase(),
+            solution.toUpperCase(),
             style: const TextStyle(
               fontSize: 36,
               fontWeight: FontWeight.bold,
