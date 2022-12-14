@@ -46,7 +46,7 @@ class GamePage extends StatelessWidget {
                     child: Row(
                       children: [
                         IconButton(
-                            onPressed: () {},
+                            onPressed: () => Navigator.pop(context),
                             icon: Image.asset("assets/icons/previous.png")),
                         const Spacer(),
                         CoinWidget(coins: state.coins.toString()),
