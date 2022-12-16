@@ -1,9 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:injectable/injectable.dart';
 import 'package:wordle_clone/di/init_get_it.dart';
 import 'package:wordle_clone/localizations.dart';
-import 'package:wordle_clone/pages/game/game_page.dart';
 import 'package:wordle_clone/pages/home/home_page.dart';
 
 void main() async {

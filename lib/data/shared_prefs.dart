@@ -8,7 +8,8 @@ import 'package:wordle_clone/utils/constants.dart';
 class SharedPrefs {
   final SharedPreferences _sharedPreferences;
 
-  final StreamController<int> _coinController = StreamController.broadcast();
+  final StreamController<int> _coinController = StreamController();
+  late Stream<int> listenCoins = _coinController.stream.asBroadcastStream();
 
   SharedPrefs(this._sharedPreferences) {
     _coinController.add(coins);
@@ -20,8 +21,6 @@ class SharedPrefs {
     await _sharedPreferences.setInt(coinsKey, coins);
     _coinController.add(this.coins);
   }
-
-  Stream<int> listenCoins() => _coinController.stream;
 }
 
 const coinsKey = "coins_key";

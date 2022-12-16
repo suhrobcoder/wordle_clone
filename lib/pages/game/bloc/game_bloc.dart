@@ -31,7 +31,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       wordList = wordsService.getCyrillicWordList();
       answers = wordsService.getCyrillicAnswers();
     }
-    sharedPrefs.listenCoins().listen((event) {
+    sharedPrefs.listenCoins.listen((event) {
       add(CoinChanged(sharedPrefs.coins));
     });
     on<_HandleFoundKeysOnKeyboard>((event, emit) {
@@ -128,9 +128,6 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       }
     });
     on<ResetGame>((event, emit) {
-      if (state.gameWon) {
-        sharedPrefs.setCoins(state.coins + coinsForGameWon);
-      }
       emit(GameState.initialState().copyWith(solution: answers.random()));
     });
     on<RevealRightGuess>((event, emit) {
@@ -159,6 +156,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     });
     on<CoinChanged>((event, emit) {
       emit(state.copyWith(coins: event.coins));
+    });
+    on<AddWinCoins>((event, emit) {
+      sharedPrefs.setCoins(state.coins + coinsForGameWon);
     });
     add(ResetGame());
     add(CoinChanged(sharedPrefs.coins));

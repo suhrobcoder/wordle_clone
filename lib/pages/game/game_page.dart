@@ -9,7 +9,6 @@ import 'package:wordle_clone/localizations.dart';
 import 'package:wordle_clone/pages/game/bloc/game_bloc.dart';
 import 'package:wordle_clone/pages/game/game_board.dart';
 import 'package:wordle_clone/utils/constants.dart';
-import 'package:wordle_clone/utils/translit.dart';
 
 class GamePage extends StatelessWidget {
   const GamePage({super.key});
@@ -27,7 +26,9 @@ class GamePage extends StatelessWidget {
                 solution: state.solution,
                 onNextClick: () {
                   Navigator.pop(context1);
-                  context.read<GameBloc>().add(ResetGame());
+                  context.read<GameBloc>()
+                    ..add(AddWinCoins())
+                    ..add(ResetGame());
                 },
               ),
               barrierDismissible: false,

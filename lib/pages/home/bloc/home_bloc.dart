@@ -14,6 +14,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<_CoinChangedEvent>((event, emit) {
       emit(state.copyWith(coins: event.coins));
     });
+    _sharedPrefs.listenCoins.listen((coins) {
+      add(_CoinChangedEvent(coins));
+    });
   }
 }
 

@@ -1,9 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:wordle_clone/localizations.dart';
 import 'package:wordle_clone/models/guess.dart';
 import 'package:wordle_clone/utils/constants.dart';
-import 'package:wordle_clone/utils/translit.dart';
 
 class LetterSquare extends StatelessWidget {
   const LetterSquare({

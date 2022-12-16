@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 class KeyboardButton extends StatelessWidget {
-  const KeyboardButton(
-      {super.key,
-      required this.name,
-      required this.color,
-      required this.width,
-      required this.height,
-      required this.onClick});
+  const KeyboardButton({
+    super.key,
+    required this.name,
+    required this.color,
+    required this.width,
+    required this.height,
+    required this.onClick,
+  });
 
   final String name;
   final Color color;
@@ -18,7 +19,9 @@ class KeyboardButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: name == "<" || name.length > 1 ? width * 1.5 : width,
+      width: name == "<" || (name.length > 1 && name[1] != "‘")
+          ? width * 1.5
+          : width,
       height: height,
       margin: const EdgeInsets.all(2),
       decoration: BoxDecoration(
