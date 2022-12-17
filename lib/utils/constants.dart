@@ -9,6 +9,7 @@ const initialCoins = 200;
 const coinsForAd = 50;
 const revealLetterCoin = 120;
 const removeLetterCoin = 100;
+const skipWordCoin = 100;
 const coinsForGameWon = 100;
 
 class AppColors {

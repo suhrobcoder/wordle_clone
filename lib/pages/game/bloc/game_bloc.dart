@@ -128,7 +128,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       }
     });
     on<ResetGame>((event, emit) {
-      emit(GameState.initialState().copyWith(solution: answers.random()));
+      emit(GameState.initialState(solution: answers.random()));
     });
     on<RevealRightGuess>((event, emit) {
       if (state.coins < revealLetterCoin) {
@@ -159,6 +159,13 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     });
     on<AddWinCoins>((event, emit) {
       sharedPrefs.setCoins(state.coins + coinsForGameWon);
+    });
+    on<SkipWord>((event, emit) {
+      if (state.coins < skipWordCoin) {
+        return;
+      }
+      sharedPrefs.setCoins(state.coins - skipWordCoin);
+      emit(GameState.initialState(solution: answers.random()));
     });
     add(ResetGame());
     add(CoinChanged(sharedPrefs.coins));

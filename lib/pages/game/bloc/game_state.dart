@@ -26,9 +26,9 @@ class GameState {
   final bool wrongGuessShake;
   final int coins;
 
-  GameState.initialState()
-      : solution = '',
-        guesses = initialGuesses,
+  GameState.initialState({
+    this.solution = '',
+  })  : guesses = initialGuesses,
         currentGuessIndex = 0,
         usedKeys = {},
         revealedLetters = [],

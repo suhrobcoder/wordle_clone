@@ -14,3 +14,5 @@ class ResetGame extends GameEvent {}
 class RevealRightGuess extends GameEvent {}
 
 class AddWinCoins extends GameEvent {}
+
+class SkipWord extends GameEvent {}

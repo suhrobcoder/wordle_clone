@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wordle_clone/components/button.dart';
 import 'package:wordle_clone/components/coin_widget.dart';
 import 'package:wordle_clone/components/keyboard_button.dart';
+import 'package:wordle_clone/components/power_up_btn.dart';
 import 'package:wordle_clone/di/init_get_it.dart';
 import 'package:wordle_clone/localizations.dart';
 import 'package:wordle_clone/pages/game/bloc/game_bloc.dart';
@@ -68,19 +69,16 @@ class GamePage extends StatelessWidget {
                         ),
                   ),
                   const SizedBox(height: 20),
-                  SizedBox(
-                    width: double.infinity,
-                    child: Stack(
-                      alignment: Alignment.center,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Positioned(
-                          left: 20,
-                          child: IconButton(
-                            onPressed: () => context
-                                .read<GameBloc>()
-                                .add(RevealRightGuess()),
-                            icon: Image.asset("assets/icons/magnifier.png"),
-                          ),
+                        PowerUpBtn(
+                          imagePath: "assets/icons/magnifier.png",
+                          price: revealLetterCoin,
+                          onPressed: () =>
+                              context.read<GameBloc>().add(RevealRightGuess()),
                         ),
                         KeyboardButton(
                           name: "submit".tr(),
@@ -92,6 +90,12 @@ class GamePage extends StatelessWidget {
                               : () => context
                                   .read<GameBloc>()
                                   .add(HandleGuess("Enter")),
+                        ),
+                        PowerUpBtn(
+                          imagePath: "assets/icons/skip.png",
+                          price: skipWordCoin,
+                          onPressed: () =>
+                              context.read<GameBloc>().add(SkipWord()),
                         ),
                       ],
                     ),
@@ -151,7 +155,7 @@ class GameWonDialog extends StatelessWidget {
           const SizedBox(height: 16),
           Button(
             onPressed: onNextClick,
-            child: const Text("NEXT"),
+            child: Text("next".tr()),
           ),
         ],
       ),
