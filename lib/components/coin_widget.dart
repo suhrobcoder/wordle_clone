@@ -20,6 +20,7 @@ class CoinWidget extends StatelessWidget {
       ),
       child: Stack(
         alignment: Alignment.center,
+        clipBehavior: Clip.none,
         children: [
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 100),
@@ -43,7 +44,7 @@ class CoinWidget extends StatelessWidget {
             ),
           ),
           Positioned(
-            right: 0,
+            right: -8,
             top: 0,
             bottom: 0,
             child: Image.asset("assets/icons/coin.png"),

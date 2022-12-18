@@ -69,36 +69,44 @@ class GamePage extends StatelessWidget {
                         ),
                   ),
                   const SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        PowerUpBtn(
-                          imagePath: "assets/icons/magnifier.png",
-                          price: revealLetterCoin,
-                          onPressed: () =>
-                              context.read<GameBloc>().add(RevealRightGuess()),
-                        ),
-                        KeyboardButton(
-                          name: "submit".tr(),
-                          color: AppColors.keyDefault,
-                          width: 120,
-                          height: 48,
-                          onClick: state.wrongGuessShake
-                              ? () {}
-                              : () => context
-                                  .read<GameBloc>()
-                                  .add(HandleGuess("Enter")),
-                        ),
-                        PowerUpBtn(
-                          imagePath: "assets/icons/skip.png",
-                          price: skipWordCoin,
-                          onPressed: () =>
-                              context.read<GameBloc>().add(SkipWord()),
-                        ),
-                      ],
-                    ),
+                  Row(
+                    children: [
+                      PowerUpBtn(
+                        imagePath: "assets/icons/magnifier.png",
+                        price: revealLetterCoin,
+                        onPressed: () =>
+                            context.read<GameBloc>().add(RevealRightGuess()),
+                      ),
+                      const SizedBox(width: 4),
+                      PowerUpBtn(
+                        imagePath: "assets/icons/remove.png",
+                        price: removeLetterCoin,
+                        onPressed: () =>
+                            context.read<GameBloc>().add(RemoveWrongGuess()),
+                      ),
+                      const SizedBox(width: 8),
+                      const Spacer(),
+                      KeyboardButton(
+                        name: "submit".tr(),
+                        color: AppColors.keyDefault,
+                        width: 100,
+                        height: 48,
+                        onClick: state.wrongGuessShake
+                            ? () {}
+                            : () => context
+                                .read<GameBloc>()
+                                .add(HandleGuess("Enter")),
+                      ),
+                      const Spacer(),
+                      const SizedBox(width: 36),
+                      PowerUpBtn(
+                        imagePath: "assets/icons/skip.png",
+                        price: skipWordCoin,
+                        onPressed: () =>
+                            context.read<GameBloc>().add(SkipWord()),
+                      ),
+                      const SizedBox(width: 16),
+                    ],
                   ),
                   const Spacer(),
                 ],

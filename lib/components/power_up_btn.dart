@@ -20,6 +20,7 @@ class PowerUpBtn extends StatelessWidget {
       children: [
         IconButton(
           onPressed: onPressed,
+          iconSize: 18,
           icon: Image.asset(imagePath),
         ),
         Positioned(

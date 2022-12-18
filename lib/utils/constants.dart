@@ -12,6 +12,8 @@ const removeLetterCoin = 100;
 const skipWordCoin = 100;
 const coinsForGameWon = 100;
 
+const removeWrongKeysCount = 3;
+
 class AppColors {
   static const correct = Color(0xFF6aaa64);
   static const present = Color(0xFFc9b458);

@@ -7,6 +7,7 @@ import 'package:wordle_clone/data/shared_prefs.dart';
 
 import 'package:wordle_clone/data/words_service.dart';
 import 'package:wordle_clone/models/guess.dart';
+import 'package:wordle_clone/pages/game/keyboard.dart';
 import 'package:wordle_clone/utils/constants.dart';
 import 'package:wordle_clone/utils/list_ext.dart';
 
@@ -21,6 +22,9 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   late final List<String> wordList;
   late final List<String> answers;
+  late final List<String> keys = (isLatin ? latinKeys : cyrillicKeys)
+      .expand((element) => element)
+      .toList();
 
   GameBloc(this.wordsService, this.sharedPrefs, @factoryParam this.isLatin)
       : super(GameState.initialState()) {
@@ -134,25 +138,29 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       if (state.coins < revealLetterCoin) {
         return;
       }
-      var unRevealedKey = state.solution.split('').firstWhere(
-          (element) => !state.usedKeys.keys.contains(element),
-          orElse: () => '');
-      if (unRevealedKey.isEmpty) {
-        unRevealedKey = state.solution.split('').firstWhere(
-            (element) => state.usedKeys[element] != MatchStatus.correct,
-            orElse: () => '');
+      final rightGuess = _findRightGuess();
+      if (rightGuess == null) return; // TODO show error message
+      emit(state.copyWith(
+          usedKeys: {...state.usedKeys, rightGuess: MatchStatus.correct}));
+      sharedPrefs.setCoins(state.coins - revealLetterCoin);
+    });
+    on<RemoveWrongGuess>((event, emit) {
+      if (state.coins < removeLetterCoin) {
+        return;
       }
-      if (unRevealedKey.isNotEmpty) {
-        final newUsedKeys = {
-          ...state.usedKeys,
-          unRevealedKey: MatchStatus.correct
-        };
-        final newRevealedLetters = state.revealedLetters;
-        newRevealedLetters.add(unRevealedKey);
-        emit(state.copyWith(
-            usedKeys: newUsedKeys, revealedLetters: newRevealedLetters));
-        sharedPrefs.setCoins(state.coins - revealLetterCoin);
+      final unRevealedWrongKeys = keys.where((element) =>
+          !state.usedKeys.keys.contains(element) && isWrongKey(element));
+      if (unRevealedWrongKeys.length <= removeWrongKeysCount) {
+        return;
       }
+      final newUsedKeys = {
+        ...state.usedKeys,
+        for (String key in (unRevealedWrongKeys.toList()..shuffle())
+            .take(removeWrongKeysCount))
+          key: MatchStatus.absent,
+      };
+      emit(state.copyWith(usedKeys: newUsedKeys));
+      sharedPrefs.setCoins(state.coins - removeLetterCoin);
     });
     on<CoinChanged>((event, emit) {
       emit(state.copyWith(coins: event.coins));
@@ -198,6 +206,26 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     result = result.replaceAll('g‘', '5');
     result = result.replaceAll('нг', '6');
     return result;
+  }
+
+  bool isWrongKey(String key) {
+    final specialKeysReplacedSolution =
+        _replaceSpecialCharacters(state.solution);
+    final specialKeysReplacedKey = _replaceSpecialCharacters(key);
+    return !specialKeysReplacedSolution.contains(specialKeysReplacedKey);
+  }
+
+  String? _findRightGuess() {
+    final specialKeysReplacedSolution =
+        _replaceSpecialCharacters(state.solution);
+    final usedKeys = state.usedKeys;
+    for (var key in keys..shuffle()) {
+      final key1 = _replaceSpecialCharacters(key);
+      if (usedKeys[key] == null && specialKeysReplacedSolution.contains(key1)) {
+        return key;
+      }
+    }
+    return null;
   }
 }
 
