@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:wordle_clone/components/button.dart';
 import 'package:wordle_clone/components/coin_widget.dart';
 import 'package:wordle_clone/components/keyboard_button.dart';
@@ -33,6 +34,12 @@ class GamePage extends StatelessWidget {
                 },
               ),
               barrierDismissible: false,
+            );
+          }
+          if (state.message != null) {
+            showToast(
+              state.message!.tr(),
+              textStyle: const TextStyle(fontSize: 24),
             );
           }
         }),

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:wordle_clone/di/init_get_it.dart';
 import 'package:wordle_clone/localizations.dart';
 import 'package:wordle_clone/pages/home/home_page.dart';
@@ -13,7 +14,7 @@ void main() async {
       supportedLocales: localizations,
       path: "assets/translations",
       fallbackLocale: uzLatin,
-      child: const MyApp(),
+      child: const OKToast(child: MyApp()),
     ),
   );
 }

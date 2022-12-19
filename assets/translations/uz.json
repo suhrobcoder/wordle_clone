@@ -1,5 +1,8 @@
 {
     "submit": "Kiritish",
     "play": "O'ynash",
-    "next": "Keyingi"
+    "next": "Keyingi",
+    "not_enough_coins": "Tangalar yetarli emas",
+    "no_more_letters_to_reveal": "Ochiladigan harf mavjud emas",
+    "no_more_letters_to_remove": "O'chirish uchun noto'g'ri harf mavjud emas"
 }

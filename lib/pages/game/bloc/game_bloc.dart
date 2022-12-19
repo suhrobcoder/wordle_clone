@@ -136,21 +136,27 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     });
     on<RevealRightGuess>((event, emit) {
       if (state.coins < revealLetterCoin) {
+        emit(state.copyWith(message: "not_enough_coins"));
         return;
       }
       final rightGuess = _findRightGuess();
-      if (rightGuess == null) return; // TODO show error message
+      if (rightGuess == null) {
+        emit(state.copyWith(message: "no_more_letters_to_reveal"));
+        return;
+      }
       emit(state.copyWith(
           usedKeys: {...state.usedKeys, rightGuess: MatchStatus.correct}));
       sharedPrefs.setCoins(state.coins - revealLetterCoin);
     });
     on<RemoveWrongGuess>((event, emit) {
       if (state.coins < removeLetterCoin) {
+        emit(state.copyWith(message: "not_enough_coins"));
         return;
       }
       final unRevealedWrongKeys = keys.where((element) =>
           !state.usedKeys.keys.contains(element) && isWrongKey(element));
       if (unRevealedWrongKeys.length <= removeWrongKeysCount) {
+        emit(state.copyWith(message: "no_more_letters_to_remove"));
         return;
       }
       final newUsedKeys = {
@@ -170,6 +176,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     });
     on<SkipWord>((event, emit) {
       if (state.coins < skipWordCoin) {
+        emit(state.copyWith(message: "not_enough_coins"));
         return;
       }
       sharedPrefs.setCoins(state.coins - skipWordCoin);
