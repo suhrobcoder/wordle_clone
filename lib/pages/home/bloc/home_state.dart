@@ -1,7 +1,7 @@
 part of 'home_bloc.dart';
 
 @immutable
-class HomeState {
+class HomeState extends Equatable {
   final int coins;
 
   const HomeState({
@@ -17,4 +17,7 @@ class HomeState {
       coins: coins ?? this.coins,
     );
   }
+
+  @override
+  List<Object?> get props => [coins];
 }

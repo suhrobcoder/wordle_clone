@@ -5,12 +5,15 @@ import 'package:oktoast/oktoast.dart';
 import 'package:wordle_clone/components/button.dart';
 import 'package:wordle_clone/components/coin_widget.dart';
 import 'package:wordle_clone/components/keyboard_button.dart';
+import 'package:wordle_clone/components/letter_square.dart';
 import 'package:wordle_clone/components/power_up_btn.dart';
 import 'package:wordle_clone/di/init_get_it.dart';
 import 'package:wordle_clone/localizations.dart';
 import 'package:wordle_clone/pages/game/bloc/game_bloc.dart';
 import 'package:wordle_clone/pages/game/game_board.dart';
 import 'package:wordle_clone/utils/constants.dart';
+import 'package:wordle_clone/utils/list_ext.dart';
+import 'package:wordle_clone/utils/translit.dart';
 
 class GamePage extends StatelessWidget {
   const GamePage({super.key});
@@ -21,6 +24,7 @@ class GamePage extends StatelessWidget {
       create: (_) => getIt<GameBloc>(param1: context.locale == uzLatin),
       child: BlocConsumer<GameBloc, GameState>(
         listener: ((context, state) {
+          print(state);
           if (state.gameWon) {
             showDialog(
               context: context,
@@ -41,6 +45,13 @@ class GamePage extends StatelessWidget {
               state.message!.tr(),
               textStyle: const TextStyle(fontSize: 24),
             );
+          }
+          if (state.showFirstRunDialog) {
+            showDialog(
+              context: context,
+              builder: (context1) => const FirstRunDialog(),
+            );
+            context.read<GameBloc>().add(FirstRunDialogShown());
           }
         }),
         builder: (context, state) {
@@ -174,6 +185,76 @@ class GameWonDialog extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class FirstRunDialog extends StatelessWidget {
+  const FirstRunDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final shouldTranslit = context.locale == uzCyrl;
+    final textStyle = Theme.of(context).textTheme;
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+      title: Text("how_to_play".tr(), style: textStyle.titleLarge),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("guide_header".tr(), style: textStyle.bodyLarge),
+          const SizedBox(height: 8),
+          Text("examples".tr(), style: textStyle.titleLarge),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: correctLetterGuess.letters
+                .mapIndexed((letter, index) => LetterSquare(
+                      guess: correctLetterGuess,
+                      letter: shouldTranslit
+                          ? Translit.latinToCyrillic(source: letter)
+                          : letter,
+                      id: index,
+                    ))
+                .toList(),
+          ),
+          Text("correct_description".tr(), style: textStyle.bodyMedium),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: presentLetterGuess.letters
+                .mapIndexed((letter, index) => LetterSquare(
+                      guess: presentLetterGuess,
+                      letter: shouldTranslit
+                          ? Translit.latinToCyrillic(source: letter)
+                          : letter,
+                      id: index,
+                    ))
+                .toList(),
+          ),
+          Text("present_description".tr(), style: textStyle.bodyMedium),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: absentLetterGuess.letters
+                .mapIndexed((letter, index) => LetterSquare(
+                      guess: absentLetterGuess,
+                      letter: shouldTranslit
+                          ? Translit.latinToCyrillic(source: letter)
+                          : letter,
+                      id: index,
+                    ))
+                .toList(),
+          ),
+          Text("absent_description".tr(), style: textStyle.bodyMedium),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text("close".tr()),
+        ),
+      ],
     );
   }
 }

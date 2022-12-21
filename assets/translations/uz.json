@@ -4,5 +4,12 @@
     "next": "Keyingi",
     "not_enough_coins": "Tangalar yetarli emas",
     "no_more_letters_to_reveal": "Ochiladigan harf mavjud emas",
-    "no_more_letters_to_remove": "O'chirish uchun noto'g'ri harf mavjud emas"
+    "no_more_letters_to_remove": "O'chirish uchun noto'g'ri harf mavjud emas",
+    "how_to_play": "O'yin shartlari",
+    "guide_header": "So'zni 6 ta urinishda topishga harakat qilib ko‘ring.\n• Har bitta urinish 5 harfli so'z bo'lishi shart.\n• So'z kiritilgach so'zni topishda yordam berish uchun ranglari o'garadi.",
+    "examples": "Misollar",
+    "correct_description": "S so'zda mavjud va to'g'ri o'rinda",
+    "present_description": "X so'zda mavjud lekin noto'g'ri o'rinda",
+    "absent_description": "CH so'zda mavjud emas",
+    "close": "Yopish"
 }

@@ -4,5 +4,12 @@
     "next": "Кейинги",
     "not_enough_coins": "Tangalar yetarli emas",
     "no_more_letters_to_reveal": "Ochiladigan harf mavjud emas",
-    "no_more_letters_to_remove": "O'chirish uchun noto'g'ri harf mavjud emas"
+    "no_more_letters_to_remove": "O'chirish uchun noto'g'ri harf mavjud emas",
+    "how_to_play": "Ўйин шартлари",
+    "guide_header": "Сўзни 6 та уринишда топишга ҳаракат қилиб ко‘ринг.\n• Ҳар битта уриниш 5 ҳарфли сўз бўлиши шарт.\n• Сўз киритилгач сўзни топишда ёрдам бериш учун ранглари ўгаради.",
+    "examples": "Мисоллар",
+    "correct_description": "С сўзда мавжуд ва тўғри ўринда",
+    "present_description": "Х сўзда мавжуд лекин нотўғри ўринда",
+    "absent_description": "Ч сўзда мавжуд эмас",
+    "close": "Ёпиш"
 }

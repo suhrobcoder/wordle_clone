@@ -18,3 +18,5 @@ class RemoveWrongGuess extends GameEvent {}
 class AddWinCoins extends GameEvent {}
 
 class SkipWord extends GameEvent {}
+
+class FirstRunDialogShown extends GameEvent {}

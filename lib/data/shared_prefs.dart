@@ -21,6 +21,13 @@ class SharedPrefs {
     await _sharedPreferences.setInt(coinsKey, coins);
     _coinController.add(this.coins);
   }
+
+  bool get isFirstRun => _sharedPreferences.getBool(firstRunKey) ?? true;
+
+  Future<void> setFirstRun(bool isFirstRun) async {
+    await _sharedPreferences.setBool(firstRunKey, isFirstRun);
+  }
 }
 
 const coinsKey = "coins_key";
+const firstRunKey = "first_run_key";

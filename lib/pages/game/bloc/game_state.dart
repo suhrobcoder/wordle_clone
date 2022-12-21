@@ -1,7 +1,7 @@
 part of 'game_bloc.dart';
 
 @immutable
-class GameState {
+class GameState extends Equatable {
   const GameState({
     required this.solution,
     required this.guesses,
@@ -13,6 +13,7 @@ class GameState {
     required this.gameWon,
     required this.wrongGuessShake,
     required this.coins,
+    required this.showFirstRunDialog,
     required this.message,
   });
 
@@ -26,11 +27,14 @@ class GameState {
   final List<String> revealedLetters;
   final bool wrongGuessShake;
   final int coins;
+  final bool showFirstRunDialog;
   final String? message;
 
   GameState.initialState({
-    this.solution = '',
-  })  : guesses = initialGuesses,
+    required this.coins,
+    required this.showFirstRunDialog,
+  })  : solution = '',
+        guesses = initialGuesses,
         currentGuessIndex = 0,
         usedKeys = {},
         revealedLetters = [],
@@ -38,8 +42,20 @@ class GameState {
         gameEnded = false,
         gameWon = false,
         wrongGuessShake = false,
-        coins = 0,
         message = null;
+
+  GameState clear({required String solution}) {
+    return copyWith(
+      solution: solution,
+      guesses: initialGuesses,
+      currentGuessIndex: 0,
+      usedKeys: {},
+      revealedLetters: [],
+      gameStarted: false,
+      gameEnded: false,
+      gameWon: false,
+    );
+  }
 
   GameState copyWith({
     int? currentGuessIndex,
@@ -52,6 +68,7 @@ class GameState {
     MatchingUsedKey? usedKeys,
     bool? wrongGuessShake,
     int? coins,
+    bool? showFirstRunDialog,
     String? message,
   }) {
     return GameState(
@@ -65,12 +82,29 @@ class GameState {
       revealedLetters: revealedLetters ?? this.revealedLetters,
       wrongGuessShake: wrongGuessShake ?? this.wrongGuessShake,
       coins: coins ?? this.coins,
+      showFirstRunDialog: showFirstRunDialog ?? this.showFirstRunDialog,
       message: message,
     );
   }
 
   @override
   String toString() {
-    return 'GameState{currentGuessIndex: $currentGuessIndex, gameEnded: $gameEnded, gameStarted: $gameStarted, gameWon: $gameWon, guesses: $guesses, solution: $solution, usedKeys: $usedKeys, revealedLetters: $revealedLetters, wrongGuessShake: $wrongGuessShake, coins: $coins}';
+    return 'GameState{currentGuessIndex: $currentGuessIndex, gameEnded: $gameEnded, gameStarted: $gameStarted, gameWon: $gameWon, guesses: $guesses, solution: $solution, usedKeys: $usedKeys, revealedLetters: $revealedLetters, wrongGuessShake: $wrongGuessShake, coins: $coins, showFirstRunDialog: $showFirstRunDialog, message: $message}';
   }
+
+  @override
+  List<Object?> get props => [
+        currentGuessIndex,
+        gameEnded,
+        gameStarted,
+        gameWon,
+        guesses,
+        solution,
+        usedKeys,
+        revealedLetters,
+        wrongGuessShake,
+        coins,
+        showFirstRunDialog,
+        message,
+      ];
 }

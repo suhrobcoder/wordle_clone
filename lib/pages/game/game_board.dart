@@ -64,15 +64,18 @@ class _GameBoardState extends State<GameBoard>
                         0),
                     child: child,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: guess.letters
-                        .mapIndexed((letter, index) => LetterSquare(
-                              guess: guess,
-                              letter: letter,
-                              id: index,
-                            ))
-                        .toList(),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: guess.letters
+                          .mapIndexed((letter, index) => LetterSquare(
+                                guess: guess,
+                                letter: letter,
+                                id: index,
+                              ))
+                          .toList(),
+                    ),
                   ),
                 ))
             .toList(),

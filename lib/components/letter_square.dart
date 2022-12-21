@@ -18,7 +18,6 @@ class LetterSquare extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size.width / 7;
     var text = "";
     if (revealedLetter == null && letter.isNotEmpty) {
       text = letter;
@@ -27,22 +26,25 @@ class LetterSquare extends StatelessWidget {
     } else {
       text = letter;
     }
-    return Container(
-      width: size,
-      height: size,
-      margin: const EdgeInsets.all(3),
-      decoration: BoxDecoration(
-        color: AppColors.getColorByMatch(guess.matches[id]),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(width: guess.isComplete ? 0 : 1),
-      ),
-      child: Center(
-        child: Text(
-          text.toUpperCase(),
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 30,
-            color: Colors.white,
+    return Expanded(
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: Container(
+          margin: const EdgeInsets.all(3),
+          decoration: BoxDecoration(
+            color: AppColors.getColorByMatch(guess.matches[id]),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(width: guess.isComplete ? 0 : 1),
+          ),
+          child: Center(
+            child: Text(
+              text.toUpperCase(),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 30,
+                color: Colors.white,
+              ),
+            ),
           ),
         ),
       ),

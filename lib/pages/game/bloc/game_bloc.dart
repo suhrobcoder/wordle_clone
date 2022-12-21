@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:vibration/vibration.dart';
@@ -27,7 +28,10 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       .toList();
 
   GameBloc(this.wordsService, this.sharedPrefs, @factoryParam this.isLatin)
-      : super(GameState.initialState()) {
+      : super(GameState.initialState(
+          coins: sharedPrefs.coins,
+          showFirstRunDialog: sharedPrefs.isFirstRun,
+        )) {
     if (isLatin) {
       wordList = wordsService.getLatinWordList();
       answers = wordsService.getLatinAnswers();
@@ -132,7 +136,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       }
     });
     on<ResetGame>((event, emit) {
-      emit(GameState.initialState(solution: answers.random()));
+      emit(state.clear(solution: answers.random()));
     });
     on<RevealRightGuess>((event, emit) {
       if (state.coins < revealLetterCoin) {
@@ -180,7 +184,11 @@ class GameBloc extends Bloc<GameEvent, GameState> {
         return;
       }
       sharedPrefs.setCoins(state.coins - skipWordCoin);
-      emit(GameState.initialState(solution: answers.random()));
+      emit(state.clear(solution: answers.random()));
+    });
+    on<FirstRunDialogShown>((event, emit) {
+      sharedPrefs.setFirstRun(false);
+      emit(state.copyWith(showFirstRunDialog: false));
     });
     add(ResetGame());
     add(CoinChanged(sharedPrefs.coins));

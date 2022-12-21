@@ -5,10 +5,10 @@ const letterCount = 5;
 const rowCount = 6;
 const marginBetweenCells = 8.0;
 
-const initialCoins = 200;
+const initialCoins = 500;
 const coinsForAd = 50;
 const revealLetterCoin = 120;
-const removeLetterCoin = 100;
+const removeLetterCoin = 80;
 const skipWordCoin = 100;
 const coinsForGameWon = 100;
 
@@ -33,6 +33,48 @@ class AppColors {
     }
   }
 }
+
+const correctLetterGuess = Guess(
+  id: 0,
+  letters: ['S', 'A', 'L', 'O', 'M'],
+  matches: [
+    MatchStatus.correct,
+    MatchStatus.empty,
+    MatchStatus.empty,
+    MatchStatus.empty,
+    MatchStatus.empty,
+  ],
+  isComplete: false,
+  isCorrect: false,
+);
+
+const presentLetterGuess = Guess(
+  id: 0,
+  letters: ['Y', 'A', 'X', 'SH', 'I'],
+  matches: [
+    MatchStatus.empty,
+    MatchStatus.empty,
+    MatchStatus.present,
+    MatchStatus.empty,
+    MatchStatus.empty,
+  ],
+  isComplete: false,
+  isCorrect: false,
+);
+
+const absentLetterGuess = Guess(
+  id: 0,
+  letters: ['B', 'A', 'R', 'CH', 'A'],
+  matches: [
+    MatchStatus.empty,
+    MatchStatus.empty,
+    MatchStatus.empty,
+    MatchStatus.absent,
+    MatchStatus.empty,
+  ],
+  isComplete: false,
+  isCorrect: false,
+);
 
 const initialGuesses = [
   Guess(
