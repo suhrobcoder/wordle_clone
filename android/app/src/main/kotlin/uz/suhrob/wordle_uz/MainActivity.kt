@@ -1,4 +1,4 @@
-package com.example.wordle_clone
+package uz.suhrob.wordle_uz
 
 import io.flutter.embedding.android.FlutterActivity
 
