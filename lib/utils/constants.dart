@@ -9,7 +9,7 @@ const initialCoins = 500;
 const coinsForAd = 50;
 const revealLetterCoin = 120;
 const removeLetterCoin = 80;
-const skipWordCoin = 100;
+const skipWordCoin = 200;
 const coinsForGameWon = 100;
 
 const removeWrongKeysCount = 3;
