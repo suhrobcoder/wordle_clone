@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:wordle_clone/components/button.dart';
 import 'package:wordle_clone/components/coin_widget.dart';
@@ -20,11 +21,11 @@ class GamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocProvider(
       create: (_) => getIt<GameBloc>(param1: context.locale == uzLatin),
       child: BlocConsumer<GameBloc, GameState>(
         listener: ((context, state) {
-          print(state);
           if (state.gameWon) {
             showDialog(
               context: context,
@@ -67,7 +68,10 @@ class GamePage extends StatelessWidget {
                       children: [
                         IconButton(
                             onPressed: () => Navigator.pop(context),
-                            icon: Image.asset("assets/icons/previous.png")),
+                            icon: SvgPicture.asset(
+                              "assets/icons/chevron_back.svg",
+                              color: theme.colorScheme.onBackground,
+                            )),
                         const Spacer(),
                         CoinWidget(coins: state.coins.toString()),
                       ],
@@ -90,14 +94,14 @@ class GamePage extends StatelessWidget {
                   Row(
                     children: [
                       PowerUpBtn(
-                        imagePath: "assets/icons/magnifier.png",
+                        iconPath: "assets/icons/search.svg",
                         price: revealLetterCoin,
                         onPressed: () =>
                             context.read<GameBloc>().add(RevealRightGuess()),
                       ),
                       const SizedBox(width: 4),
                       PowerUpBtn(
-                        imagePath: "assets/icons/remove.png",
+                        iconPath: "assets/icons/remove.svg",
                         price: removeLetterCoin,
                         onPressed: () =>
                             context.read<GameBloc>().add(RemoveWrongGuess()),
@@ -118,7 +122,7 @@ class GamePage extends StatelessWidget {
                       const Spacer(),
                       const SizedBox(width: 36),
                       PowerUpBtn(
-                        imagePath: "assets/icons/skip.png",
+                        iconPath: "assets/icons/skip.svg",
                         price: skipWordCoin,
                         onPressed: () =>
                             context.read<GameBloc>().add(SkipWord()),

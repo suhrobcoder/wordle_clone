@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wordle_clone/utils/constants.dart';
 
 class PowerUpBtn extends StatelessWidget {
   const PowerUpBtn({
     Key? key,
-    required this.imagePath,
+    required this.iconPath,
     required this.price,
     required this.onPressed,
   }) : super(key: key);
 
-  final String imagePath;
+  final String iconPath;
   final int price;
   final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Stack(
       clipBehavior: Clip.none,
       children: [
         IconButton(
           onPressed: onPressed,
           iconSize: 18,
-          icon: Image.asset(imagePath),
+          icon:
+              SvgPicture.asset(iconPath, color: theme.colorScheme.onBackground),
         ),
         Positioned(
           right: -8,

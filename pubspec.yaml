@@ -39,6 +39,7 @@ dependencies:
   easy_localization: ^3.0.1
   oktoast: ^3.3.1
   equatable: ^2.0.5
+  flutter_svg: ^1.1.6
 
 dev_dependencies:
   flutter_test:

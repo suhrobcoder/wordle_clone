@@ -1,0 +1,20 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 44 44"
+    id="vector">
+    <path
+        id="path"
+        d="M 22 2 C 16.698 2 11.607 4.109 7.858 7.858 C 4.109 11.607 2 16.698 2 22 C 2 27.302 4.109 32.393 7.858 36.142 C 11.607 39.891 16.698 42 22 42 C 27.302 42 32.393 39.891 36.142 36.142 C 39.891 32.393 42 27.302 42 22 C 42 16.698 39.891 11.607 36.142 7.858 C 32.393 4.109 27.302 2 22 2 Z"
+        fill="none"
+        stroke="#000000"
+        stroke-width="4"
+        stroke-miterlimit="10"/>
+    <path
+        id="path_1"
+        d="M 15 15 L 29 29 M 15 29 L 29 15"
+        fill="none"
+        stroke="#000000"
+        stroke-width="4"
+        stroke-linecap="round"
+        stroke-miterlimit="10"/>
+</svg>
