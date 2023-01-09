@@ -28,7 +28,7 @@ extension GetItInjectableX on _i1.GetIt {
       environmentFilter,
     );
     final appModule = _$AppModule();
-    await gh.factoryAsync<_i3.SharedPreferences>(
+    await gh.singletonAsync<_i3.SharedPreferences>(
       () => appModule.prefs,
       preResolve: true,
     );

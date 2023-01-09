@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class KeyboardButton extends StatelessWidget {
   const KeyboardButton({
@@ -33,7 +34,10 @@ class KeyboardButton extends StatelessWidget {
         onTap: onClick,
         child: Center(
           child: name == "<"
-              ? Image.asset("assets/icons/backspace.png")
+              ? SvgPicture.asset(
+                  "assets/icons/backspace.svg",
+                  color: Colors.white,
+                )
               : Text(
                   name.toUpperCase(),
                   style: const TextStyle(
