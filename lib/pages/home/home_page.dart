@@ -16,10 +16,10 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final theme = Theme.of(context);
     return BlocProvider(
       create: (_) => getIt<HomeBloc>(),
       child: Scaffold(
-        backgroundColor: AppColors.bg,
         body: SafeArea(
           child: BlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) {
@@ -35,14 +35,11 @@ class HomePage extends StatelessWidget {
                             labels: const ["Lotin", "Кирил"],
                             initialLabelIndex:
                                 localizations.indexOf(context.locale),
-                            activeBgColor: const [AppColors.keyDefault],
-                            inactiveBgColor: AppColors.absent,
-                            inactiveFgColor: Colors.white,
+                            activeBgColor: [theme.colorScheme.surfaceVariant],
+                            inactiveBgColor: theme.colorScheme.surface,
+                            inactiveFgColor: theme.colorScheme.onSurface,
                             customTextStyles: const [
-                              TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                              ),
+                              TextStyle(fontSize: 16),
                             ],
                             minWidth: 72,
                             onToggle: (index) =>
@@ -56,11 +53,13 @@ class HomePage extends StatelessWidget {
                     const Spacer(),
                     AnimatedButton(
                       width: size.width - 40,
+                      color: theme.colorScheme.primary,
                       child: Text(
                         "play".tr().toUpperCase(),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
+                          color: theme.colorScheme.onPrimary,
                         ),
                       ),
                       onPressed: () => Navigator.push(

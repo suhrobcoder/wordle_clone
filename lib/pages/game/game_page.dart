@@ -57,7 +57,6 @@ class GamePage extends StatelessWidget {
         }),
         builder: (context, state) {
           return Scaffold(
-            backgroundColor: AppColors.bg,
             body: SafeArea(
               child: Column(
                 children: [
@@ -68,9 +67,13 @@ class GamePage extends StatelessWidget {
                       children: [
                         IconButton(
                             onPressed: () => Navigator.pop(context),
-                            icon: SvgPicture.asset(
-                              "assets/icons/chevron_back.svg",
-                              color: theme.colorScheme.onBackground,
+                            icon: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 8, right: 10),
+                              child: SvgPicture.asset(
+                                "assets/icons/chevron_back.svg",
+                                color: theme.colorScheme.onBackground,
+                              ),
                             )),
                         const Spacer(),
                         CoinWidget(coins: state.coins.toString()),

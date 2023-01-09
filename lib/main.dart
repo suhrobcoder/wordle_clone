@@ -4,6 +4,7 @@ import 'package:oktoast/oktoast.dart';
 import 'package:wordle_clone/di/init_get_it.dart';
 import 'package:wordle_clone/localizations.dart';
 import 'package:wordle_clone/pages/home/home_page.dart';
+import 'package:wordle_clone/theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,9 +30,8 @@ class MyApp extends StatelessWidget {
       locale: context.locale,
       supportedLocales: context.supportedLocales,
       localizationsDelegates: context.localizationDelegates,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: lightTheme,
+      darkTheme: darkTheme,
       home: const HomePage(),
     );
   }

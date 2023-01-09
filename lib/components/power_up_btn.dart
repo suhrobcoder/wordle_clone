@@ -22,24 +22,28 @@ class PowerUpBtn extends StatelessWidget {
       children: [
         IconButton(
           onPressed: onPressed,
-          iconSize: 18,
-          icon:
-              SvgPicture.asset(iconPath, color: theme.colorScheme.onBackground),
+          iconSize: 16,
+          icon: SvgPicture.asset(
+            iconPath,
+            width: 32,
+            height: 32,
+            color: theme.colorScheme.onBackground,
+          ),
         ),
         Positioned(
           right: -8,
           bottom: -4,
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 2),
-            decoration: const ShapeDecoration(
-              color: AppColors.absent,
-              shape: StadiumBorder(),
+            decoration: ShapeDecoration(
+              color: Theme.of(context).colorScheme.surfaceVariant,
+              shape: const StadiumBorder(),
             ),
             child: Row(
               children: [
                 Text(
                   price.toString(),
-                  style: const TextStyle(fontSize: 12, color: Colors.white),
+                  style: const TextStyle(fontSize: 12),
                 ),
                 const SizedBox(width: 2),
                 Image.asset(

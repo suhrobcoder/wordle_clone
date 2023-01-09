@@ -14,9 +14,9 @@ class CoinWidget extends StatelessWidget {
     return Container(
       width: 108,
       height: 32,
-      decoration: const ShapeDecoration(
-        shape: StadiumBorder(),
-        color: AppColors.absent,
+      decoration: ShapeDecoration(
+        shape: const StadiumBorder(),
+        color: Theme.of(context).colorScheme.surfaceVariant,
       ),
       child: Stack(
         alignment: Alignment.center,
@@ -37,16 +37,15 @@ class CoinWidget extends StatelessWidget {
               key: ValueKey(coins),
               coins,
               style: const TextStyle(
-                color: Colors.white,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
           Positioned(
-            right: -8,
-            top: 0,
-            bottom: 0,
+            right: -12,
+            top: -2,
+            bottom: -2,
             child: Image.asset("assets/icons/coin.png"),
           ),
         ],
