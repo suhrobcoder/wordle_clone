@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="uz.suhrob.wordle_uz">
    <application
-        android:label="So'zni top"
+        android:label="So'z O'yini"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
